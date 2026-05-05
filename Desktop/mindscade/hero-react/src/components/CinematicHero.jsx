@@ -63,7 +63,7 @@ export default function CinematicHero() {
   useEffect(() => {
     const v = videoRef.current
     if (!v) return
-    const set = () => { v.playbackRate = 0.45 }
+    const set = () => { v.playbackRate = 0.6 }
     v.addEventListener('loadedmetadata', set)
     set()
     return () => v.removeEventListener('loadedmetadata', set)
