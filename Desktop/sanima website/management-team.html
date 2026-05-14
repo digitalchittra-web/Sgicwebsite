@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Management Team | Sanima GIC Insurance</title>
+<script>if(window.self===window.top){window.location.replace('sgicweb.html?spa=management-team.html');}</script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--primary:#026838;--secondary:#ec8323;--text-dark:#2c3e50;--text-light:#687799;--border:#e1e5ee;--bg-alt:#f8faff;--grad-primary:linear-gradient(135deg,#014d29 0%,#026838 100%);--grad-hero:linear-gradient(135deg,#012a16 0%,#014d29 50%,#026838 100%);--shadow-sm:0 2px 8px rgba(0,0,0,0.08);--shadow-md:0 8px 25px rgba(0,0,0,0.10);--shadow-lg:0 20px 60px rgba(0,0,0,0.15);--r-md:12px;--r-lg:20px;--t:all 0.3s ease}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:16px}body{font-family:'Inter',sans-serif;color:var(--text-dark);background:#fff;overflow-x:hidden;line-height:1.6}h1,h2,h3,h4{font-family:'Poppins',sans-serif;font-weight:700;line-height:1.2}a{text-decoration:none;color:inherit}.container{max-width:1200px;margin:0 auto;padding:0 30px}
+.page-hero{background:var(--grad-hero);padding:80px 0 60px;position:relative;overflow:hidden;text-align:center}
+.page-hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(236,131,35,0.2);border:1px solid rgba(236,131,35,0.4);color:#ffc97e;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:6px 16px;border-radius:20px;margin-bottom:20px}
+.page-hero h1{font-size:48px;color:#fff;margin-bottom:12px}.page-hero p{color:rgba(255,255,255,0.75);font-size:17px;max-width:550px;margin:0 auto}
+.hero-wave{position:absolute;bottom:0;left:0;right:0;height:50px}.hero-wave svg{width:100%;height:100%}
+.mgmt-section{padding:80px 0}
+.section-label{display:inline-flex;align-items:center;gap:8px;background:rgba(2,104,56,0.08);color:var(--primary);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:6px 14px;border-radius:20px;margin-bottom:16px}
+.section-header{margin-bottom:40px}.section-header h2{font-size:32px;color:var(--text-dark);margin-bottom:8px}.section-header h2 span{color:var(--primary)}
+.section-divider{width:60px;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:2px;margin-top:12px}
+
+/* CEO Card */
+.ceo-card{background:var(--grad-primary);border-radius:var(--r-lg);display:flex;align-items:stretch;margin-bottom:60px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.ceo-card::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:rgba(255,255,255,0.05);border-radius:50%}
+.ceo-photo{width:220px;height:260px;object-fit:cover;object-position:top;flex-shrink:0;display:block}
+.ceo-photo-placeholder{width:200px;height:100%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:72px;color:rgba(255,255,255,0.4);flex-shrink:0}
+.ceo-info{padding:36px 40px;color:#fff;flex:1}
+.ceo-role{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.65);margin-bottom:6px}
+.ceo-name{font-size:30px;font-weight:800;margin-bottom:8px}
+.ceo-meta{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:20px}
+.ceo-desc{font-size:14px;color:rgba(255,255,255,0.8);line-height:1.8}
+
+/* Team grid - photo cards */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px}
+.team-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:var(--t);box-shadow:var(--shadow-sm);text-align:center}
+.team-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
+.team-photo-wrap{height:200px;overflow:hidden;background:var(--bg-alt)}
+.team-photo{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform 0.4s ease;display:block}
+.team-card:hover .team-photo{transform:scale(1.06)}
+.team-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--primary);opacity:0.4}
+.team-body{padding:16px 14px 20px}
+.team-name{font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:6px}
+.team-role{font-size:11px;color:var(--primary);font-weight:600;background:rgba(2,104,56,0.08);padding:3px 10px;border-radius:20px;display:inline-block}
+
+/* Contact strip */
+.contact-strip{background:var(--bg-alt);border-radius:var(--r-lg);padding:28px 32px;margin-top:48px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;border:1px solid var(--border)}
+.contact-strip-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-light)}
+.contact-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-dark)}.contact-item i{color:var(--primary)}
+
+@media(max-width:768px){.page-hero h1{font-size:32px}.ceo-card{flex-direction:column}.ceo-photo{width:100%;height:240px}.ceo-info{padding:24px}.team-grid{grid-template-columns:1fr 1fr}.contact-strip{flex-direction:column;align-items:flex-start;gap:16px}}
+@media(max-width:400px){.team-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="sub-content">
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge"><i class="fas fa-briefcase"></i> About SGIC</div>
+    <h1>Management Team</h1>
+    <p>Experienced leaders driving strategic growth and operational excellence</p>
+  </div>
+  <div class="hero-wave"><svg viewBox="0 0 1200 50" preserveAspectRatio="none" fill="#fff"><path d="M0,50 C300,0 900,50 1200,20 L1200,50 Z"/></svg></div>
+</div>
+<div class="mgmt-section"><div class="container">
+
+  <div class="section-header">
+    <div class="section-label"><i class="fas fa-crown"></i> Executive</div>
+    <h2>Chief <span>Executive Officer</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="ceo-card">
+    <img src="sgic website/IMAGES/Management/ceo pp pic.jpg" alt="Sudyumna Prasad Upadhyaya" class="ceo-photo" onerror="this.parentElement.innerHTML='<div class=ceo-photo-placeholder><i class=fas fa-user-tie></i></div>'+this.parentElement.innerHTML.replace(this.outerHTML,'')">
+    <div class="ceo-info">
+      <div class="ceo-role">Chief Executive Officer</div>
+      <div class="ceo-name">Sudyumna Prasad Upadhyaya</div>
+      <div class="ceo-meta"><i class="fas fa-calendar-alt"></i> Appointed: October 24, 2022</div>
+      <div class="ceo-desc">Leading Sanima GIC Insurance Ltd. with a vision for growth, customer centricity, and operational excellence. Committed to building a robust insurance ecosystem across Nepal.</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-label"><i class="fas fa-users"></i> Leadership</div>
+    <h2>Senior <span>Management</span></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-photo-wrap"><img src="sgic website/IMAGES/Management/dceo sir.jpg" alt="Ram Chandra Shrestha" class="team-photo" onerror="this.parentElement.innerHTML='<div class=team-photo-placeholder><i class=fas fa-user-tie></i></div>'"></div>
+      <div class="team-body"><div class="team-name">Ram Chandra Shrestha</div><div class="team-role">Sr. Deputy CEO</div></div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo-wrap"><img src="sgic website/IMAGES/Management/subodh sir 2.jpg" alt="Subodh Lal Shrestha" class="team-photo" onerror="this.parentElement.innerHTML='<div class=team-photo-placeholder><i class=fas fa-user-tie></i></div>'"></div>
+      <div class="team-body"><div class="team-name">Subodh Lal Shrestha</div><div class="team-role">DGM – Company Secretary</div></div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo-wrap"><img src="sgic website/IMAGES/Management/raju.jpg" alt="Raju Poudel" class="team-photo" onerror="this.parentElement.innerHTML='<div class=team-photo-placeholder><i class=fas fa-user-tie></i></div>'"></div>
+      <div class="team-body"><div class="team-name">Raju Poudel</div><div class="team-role">Deputy General Manager</div></div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo-wrap"><img src="sgic website/IMAGES/Management/binesh.jpg" alt="Binesh Maskey" class="team-photo" onerror="this.parentElement.innerHTML='<div class=team-photo-placeholder><i class=fas fa-user-tie></i></div>'"></div>
+      <div class="team-body"><div class="team-name">Binesh Maskey</div><div class="team-role">Asst. General Manager</div></div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo-wrap"><img src="sgic website/IMAGES/Management/rohini.jpg" alt="Rohini Karmacharya" class="team-photo" onerror="this.parentElement.innerHTML='<div class=team-photo-placeholder><i class=fas fa-user></i></div>'"></div>
+      <div class="team-body"><div class="team-name">Rohini Karmacharya</div><div class="team-role">Asst. General Manager</div></div>
+    </div>
+  </div>
+
+  <div class="contact-strip">
+    <span class="contact-strip-label">Head Office</span>
+    <div class="contact-item"><i class="fas fa-phone-alt"></i> +977-01-4527101 / 4527170</div>
+    <div class="contact-item"><i class="fas fa-envelope"></i> info@sgic.com.np</div>
+    <div class="contact-item"><i class="fas fa-map-marker-alt"></i> Newroad, Kathmandu</div>
+  </div>
+</div></div>
+</div><!-- /sub-content -->
+</body>
+</html>
