@@ -861,6 +861,102 @@ footer { background: #012a16; color: rgba(255,255,255,0.75); padding-top: 65px; 
 }
 
 /* ============================
+   RESPONSIVE – LARGE DESKTOPS (1440px+)
+   ============================ */
+@media (min-width: 1440px) {
+  .topbar-inner, .nav-inner, .hero-inner,
+  .sec-inner, .foot-inner, .container { max-width: 1500px; }
+  .hero-inner { gap: 80px; }
+  .products-container { grid-template-columns: 260px 1fr; }
+}
+
+/* ============================
+   RESPONSIVE – MEDIUM DESKTOP (1200px–1439px)
+   ============================ */
+@media (max-width: 1439px) and (min-width: 1201px) {
+  .nav-link { padding: 28px 11px; font-size: 13px; }
+  .nav-cta { gap: 8px; }
+  .btn-outline, .btn-filled { padding: 8px 16px; font-size: 12.5px; }
+  .products-container { grid-template-columns: 220px 1fr; gap: 24px; }
+}
+
+/* ============================
+   RESPONSIVE – SMALL DESKTOP / LARGE LAPTOP (1100px–1200px)
+   ============================ */
+@media (max-width: 1200px) and (min-width: 1025px) {
+  .nav-link { padding: 28px 9px; font-size: 12.5px; }
+  .lt1 { font-size: 16px; }
+  .nav-logo img { height: 50px; }
+  .btn-outline { display: none; }
+  .btn-filled { padding: 8px 14px; font-size: 12px; }
+  .products-container { grid-template-columns: 200px 1fr; gap: 20px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .prod-nav a { font-size: 12.5px; padding: 11px 14px; }
+}
+
+/* ============================
+   RESPONSIVE – LAPTOP (1024px collapse)
+   ============================ */
+@media (max-width: 1024px) {
+  .products-container { grid-template-columns: 1fr; }
+  .prod-sidebar { display: none; }
+  .products-grid { grid-template-columns: repeat(3, 1fr); }
+  .hero-inner { padding: 40px 24px; }
+  section { padding: 70px 0; }
+}
+
+/* ============================
+   RESPONSIVE – TABLET LANDSCAPE (768px–1023px)
+   ============================ */
+@media (max-width: 1023px) and (min-width: 769px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .svc-grid { grid-template-columns: repeat(3, 1fr); }
+  .sec-inner { padding: 0 24px; }
+  .hero-inner { gap: 40px; padding: 48px 24px; }
+  .hero-title { font-size: clamp(30px, 4vw, 50px); }
+  .sec-title { font-size: clamp(22px, 3.5vw, 36px); }
+  .stat-count { font-size: 36px; }
+}
+
+/* ============================
+   RESPONSIVE – TABLET PORTRAIT (768px)
+   ============================ */
+@media (max-width: 768px) {
+  .sec-inner { padding: 0 18px; }
+  .topbar-inner { padding: 0 18px; }
+  .hero-inner { padding: 32px 18px; }
+  .hero-title { font-size: clamp(28px, 6vw, 44px); }
+  .hero-sub { font-size: 15px; }
+  .btn-hp, .btn-hs { padding: 13px 22px; font-size: 14px; }
+  .stat-count { font-size: 32px; }
+  .stat-suf { font-size: 20px; }
+  .sec-title { font-size: clamp(20px, 5vw, 32px); }
+  .sec-sub { font-size: 15px; }
+  .prod-card h3 { font-size: 15px; }
+  section { padding: 56px 0; }
+  .foot-inner { padding: 0 18px; }
+}
+
+/* ============================
+   RESPONSIVE – MOBILE (480px)
+   ============================ */
+@media (max-width: 480px) {
+  .hero-inner { padding: 24px 16px; }
+  .hero-title { font-size: clamp(24px, 7vw, 36px); }
+  .hero-sub { font-size: 14px; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .btn-hp, .btn-hs { width: 100%; justify-content: center; padding: 14px 20px; }
+  .stat-count { font-size: 28px; }
+  .stat-suf { font-size: 16px; }
+  .sec-title { font-size: clamp(20px, 6vw, 28px); }
+  .sec-sub { font-size: 14px; }
+  .products-grid { grid-template-columns: 1fr; }
+  .sec-inner { padding: 0 14px; }
+  section { padding: 44px 0; }
+}
+
+/* ============================
    OFFICERS FLOATER
    ============================ */
 .officers-floater {
