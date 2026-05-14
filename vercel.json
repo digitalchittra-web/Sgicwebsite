@@ -1,18 +1,19 @@
 {
   "version": 2,
-  "public": true,
-  "buildCommand": "echo 'No build required'",
-  "outputDirectory": ".",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/",
-      "destination": "/sgicweb.html"
+      "src": "**/*.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/",
       "dest": "/sgicweb.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
