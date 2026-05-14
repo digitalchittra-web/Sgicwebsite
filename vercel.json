@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "public": true,
+  "buildCommand": "echo 'No build required'",
+  "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/sgicweb.html"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/sgicweb.html"
+    }
+  ]
+}

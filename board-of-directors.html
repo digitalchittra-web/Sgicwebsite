@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Board of Directors | Sanima GIC Insurance</title>
+<script>if(window.self===window.top){window.location.replace('sgicweb.html?spa=board-of-directors.html');}</script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--primary:#026838;--secondary:#ec8323;--text-dark:#2c3e50;--text-light:#687799;--border:#e1e5ee;--bg-alt:#f8faff;--grad-primary:linear-gradient(135deg,#014d29 0%,#026838 100%);--grad-hero:linear-gradient(135deg,#012a16 0%,#014d29 50%,#026838 100%);--shadow-sm:0 2px 8px rgba(0,0,0,0.08);--shadow-md:0 8px 25px rgba(0,0,0,0.10);--shadow-lg:0 20px 60px rgba(0,0,0,0.15);--r-md:12px;--r-lg:20px;--t:all 0.3s ease}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:16px}body{font-family:'Inter',sans-serif;color:var(--text-dark);background:#fff;overflow-x:hidden;line-height:1.6}h1,h2,h3,h4{font-family:'Poppins',sans-serif;font-weight:700;line-height:1.2}a{text-decoration:none;color:inherit}.container{max-width:1200px;margin:0 auto;padding:0 30px}
+.page-hero{background:var(--grad-hero);padding:80px 0 60px;position:relative;overflow:hidden;text-align:center}
+.page-hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(236,131,35,0.2);border:1px solid rgba(236,131,35,0.4);color:#ffc97e;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;padding:6px 16px;border-radius:20px;margin-bottom:20px}
+.page-hero h1{font-size:48px;color:#fff;margin-bottom:12px}.page-hero p{color:rgba(255,255,255,0.75);font-size:17px;max-width:550px;margin:0 auto}
+.hero-wave{position:absolute;bottom:0;left:0;right:0;height:50px}.hero-wave svg{width:100%;height:100%}
+.board-section{padding:80px 0}
+.section-label{display:inline-flex;align-items:center;gap:8px;background:rgba(2,104,56,0.08);color:var(--primary);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:6px 14px;border-radius:20px;margin-bottom:16px}
+.section-header{margin-bottom:40px}.section-header h2{font-size:32px;color:var(--text-dark);margin-bottom:8px}.section-header h2 span{color:var(--primary)}
+.section-divider{width:60px;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:2px;margin-top:12px}
+
+/* Chairman */
+.chairman-card{background:var(--grad-primary);border-radius:var(--r-lg);display:flex;align-items:center;gap:48px;margin-bottom:60px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.chairman-card::before{content:'';position:absolute;top:-60px;right:-60px;width:300px;height:300px;background:rgba(255,255,255,0.05);border-radius:50%}
+.chairman-photo-wrap{flex-shrink:0;position:relative}
+.chairman-photo{width:260px;height:320px;object-fit:cover;object-position:top;display:block}
+.chairman-photo-placeholder{width:200px;height:240px;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:72px;color:rgba(255,255,255,0.4)}
+.chairman-info{padding:40px 40px 40px 0;color:#fff;flex:1}
+.chairman-role{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.65);margin-bottom:8px}
+.chairman-name{font-size:36px;font-weight:800;margin-bottom:16px;line-height:1.2}
+.chairman-desc{color:rgba(255,255,255,0.82);line-height:1.8;font-size:15px}
+
+/* Directors grid */
+.directors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:28px}
+.director-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:var(--t);box-shadow:var(--shadow-sm)}
+.director-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
+.director-photo-wrap{position:relative;background:var(--grad-primary);height:240px;overflow:hidden}
+.director-photo{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform 0.4s ease}
+.director-card:hover .director-photo{transform:scale(1.05)}
+.director-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:56px;color:rgba(255,255,255,0.4)}
+.director-role-tag{position:absolute;bottom:12px;left:12px;background:var(--secondary);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px}
+.director-card-body{padding:20px 22px 24px}
+.director-name{font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:4px}
+.director-meta{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-light);margin-top:8px}
+.director-meta i{color:var(--secondary)}
+
+@media(max-width:768px){.chairman-card{flex-direction:column;gap:0}.chairman-photo{width:100%;height:260px}.chairman-info{padding:24px}.chairman-name{font-size:26px}.page-hero h1{font-size:32px}.directors-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.directors-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="sub-content">
+<div class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge"><i class="fas fa-users"></i> About SGIC</div>
+    <h1>Board of Directors</h1>
+    <p>Distinguished leaders guiding Sanima GIC Insurance with integrity, expertise, and vision</p>
+  </div>
+  <div class="hero-wave"><svg viewBox="0 0 1200 50" preserveAspectRatio="none" fill="#fff"><path d="M0,50 C300,0 900,50 1200,20 L1200,50 Z"/></svg></div>
+</div>
+
+<div class="board-section">
+  <div class="container">
+
+    <div class="section-header">
+      <div class="section-label"><i class="fas fa-star"></i> Chairman</div>
+      <h2>Leading with <span>Vision & Purpose</span></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="chairman-card">
+      <div class="chairman-photo-wrap">
+        <img src="sgic website/IMAGES/BOD/KUNAL.jpg" alt="Mr. Kunal Kayal" class="chairman-photo" onerror="this.parentElement.innerHTML='<div class=chairman-photo-placeholder><i class=fas fa-user-tie></i></div>'">
+      </div>
+      <div class="chairman-info">
+        <div class="chairman-role">Board Chairman</div>
+        <div class="chairman-name">Mr. Kunal Kayal</div>
+        <div class="chairman-desc">Mr. Kunal Kayal serves as Chairman of the Board of Directors at Sanima GIC Insurance Ltd. Under his leadership, the company has achieved significant milestones in expanding its insurance portfolio and strengthening its market position. He brings extensive experience in the financial services sector and is committed to driving sustainable growth and governance excellence at SGIC.</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-label"><i class="fas fa-chess-rook"></i> Directors</div>
+      <h2>Board <span>Members</span></h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="directors-grid">
+      <div class="director-card">
+        <div class="director-photo-wrap">
+          <img src="sgic website/IMAGES/BOD/Dilip-Shrestha-.jpg" alt="Mr. Dilip Shrestha" class="director-photo" onerror="this.parentElement.innerHTML='<div class=director-photo-placeholder><i class=fas fa-user-tie></i></div>'">
+          <span class="director-role-tag">Director</span>
+        </div>
+        <div class="director-card-body">
+          <div class="director-name">Mr. Dilip Shrestha</div>
+          <div class="director-meta"><i class="fas fa-calendar-alt"></i> Appointed: Jun 15, 2023</div>
+        </div>
+      </div>
+      <div class="director-card">
+        <div class="director-photo-wrap">
+          <img src="sgic website/IMAGES/BOD/mita-mam.jpg" alt="Mrs. Mita Murarka Agrawal" class="director-photo" onerror="this.parentElement.innerHTML='<div class=director-photo-placeholder><i class=fas fa-user></i></div>'">
+          <span class="director-role-tag">Director</span>
+        </div>
+        <div class="director-card-body">
+          <div class="director-name">Mrs. Mita Murarka Agrawal</div>
+          <div class="director-meta"><i class="fas fa-calendar-alt"></i> Appointed: Jun 15, 2023</div>
+        </div>
+      </div>
+      <div class="director-card">
+        <div class="director-photo-wrap">
+          <img src="sgic website/IMAGES/BOD/dr-hemanta-kumar-dubadi-director.jpg" alt="Dr. Hemanta Kumar Dabadi" class="director-photo" onerror="this.parentElement.innerHTML='<div class=director-photo-placeholder><i class=fas fa-user-tie></i></div>'">
+          <span class="director-role-tag">Director</span>
+        </div>
+        <div class="director-card-body">
+          <div class="director-name">Dr. Hemanta Kumar Dabadi</div>
+          <div class="director-meta"><i class="fas fa-calendar-alt"></i> Appointed: Jun 15, 2023</div>
+        </div>
+      </div>
+      <div class="director-card">
+        <div class="director-photo-wrap">
+          <img src="sgic website/IMAGES/BOD/Prakash-man-Shrestha-.jpg" alt="Mr. Prakash Man Shrestha" class="director-photo" onerror="this.parentElement.innerHTML='<div class=director-photo-placeholder><i class=fas fa-user-tie></i></div>'">
+          <span class="director-role-tag">Director</span>
+        </div>
+        <div class="director-card-body">
+          <div class="director-name">Mr. Prakash Man Shrestha</div>
+          <div class="director-meta"><i class="fas fa-calendar-alt"></i> Appointed: Jun 15, 2023</div>
+        </div>
+      </div>
+      <div class="director-card">
+        <div class="director-photo-wrap">
+          <img src="sgic website/IMAGES/BOD/saraswoti-mam.jpg" alt="Mrs. Saraswoti Gyawali Gautam" class="director-photo" onerror="this.parentElement.innerHTML='<div class=director-photo-placeholder><i class=fas fa-user></i></div>'">
+          <span class="director-role-tag">Director</span>
+        </div>
+        <div class="director-card-body">
+          <div class="director-name">Mrs. Saraswoti Gyawali Gautam</div>
+          <div class="director-meta"><i class="fas fa-calendar-alt"></i> Appointed: Jun 15, 2023</div>
+        </div>
+      </div>
+      <div class="director-card">
+        <div class="director-photo-wrap">
+          <img src="sgic website/IMAGES/BOD/anil-raj-bhattarai 1.jpg" alt="Dr. Anil Raj Bhattarai" class="director-photo" onerror="this.parentElement.innerHTML='<div class=director-photo-placeholder><i class=fas fa-user-tie></i></div>'">
+          <span class="director-role-tag">Director</span>
+        </div>
+        <div class="director-card-body">
+          <div class="director-name">Dr. Anil Raj Bhattarai</div>
+          <div class="director-meta"><i class="fas fa-calendar-alt"></i> Appointed: Aug 13, 2023</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div><!-- /sub-content -->
+</body>
+</html>
