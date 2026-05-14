@@ -57,7 +57,18 @@
 .outdated-note{background:#fff8f0;border:1px solid rgba(236,131,35,0.3);border-radius:var(--r-lg);padding:24px 28px;display:flex;align-items:center;gap:16px;margin-bottom:32px}
 .outdated-note i{font-size:28px;color:var(--secondary);flex-shrink:0}
 .outdated-note p{font-size:14px;color:var(--text-dark);line-height:1.7}
-@media(max-width:768px){.page-hero h1{font-size:32px}.cta-banner{flex-direction:column;padding:28px 24px;gap:24px}.cta-btns{flex-direction:row;flex-wrap:wrap}.coverage-grid{grid-template-columns:1fr 1fr}.subprod-grid{grid-template-columns:1fr}.hero-cta-row{flex-direction:column;align-items:center}.subprod-img{height:140px}}</style>
+@media(max-width:768px){.page-hero h1{font-size:32px}.cta-banner{flex-direction:column;padding:28px 24px;gap:24px}.cta-btns{flex-direction:row;flex-wrap:wrap}.coverage-grid{grid-template-columns:1fr 1fr}.subprod-grid{grid-template-columns:1fr}.hero-cta-row{flex-direction:column;align-items:center}.subprod-img{height:140px}}
+.prod-page-layout{display:grid;grid-template-columns:240px 1fr;gap:36px;align-items:start}
+.prod-page-sidebar{position:sticky;top:110px}
+.prod-page-nav{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.prod-page-nav-title{background:var(--grad-primary);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:14px 18px;display:flex;align-items:center;gap:8px}
+.prod-page-nav a{display:flex;align-items:center;gap:10px;padding:13px 18px;font-size:13.5px;font-weight:500;color:var(--text-dark);border-bottom:1px solid var(--border);transition:var(--t);text-decoration:none}
+.prod-page-nav a:last-child{border-bottom:none}
+.prod-page-nav a:hover,.prod-page-nav a.active{background:rgba(2,104,56,0.06);color:var(--primary);padding-left:24px}
+.prod-page-nav a.active{border-left:3px solid var(--primary);font-weight:700}
+.prod-page-nav a i{width:16px;color:var(--secondary);font-size:13px;flex-shrink:0}
+@media(max-width:1024px){.prod-page-layout{grid-template-columns:1fr}.prod-page-sidebar{display:none}}
+</style>
 </head>
 <body>
 <div id="sub-content">
