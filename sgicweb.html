@@ -41,7 +41,7 @@
 }
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: clamp(14px, 1.2vw, 18px); }
 body { font-family: 'Inter', 'Segoe UI', sans-serif; color: var(--text-dark); background: #fff; overflow-x: hidden; line-height: 1.6; }
 h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; font-weight: 700; line-height: 1.2; }
 a { text-decoration: none; color: inherit; }
@@ -961,7 +961,7 @@ footer { background: #012a16; color: rgba(255,255,255,0.75); padding-top: 65px; 
    ============================ */
 .officers-floater {
   position: fixed;
-  bottom: 88px;
+  bottom: 28px;
   right: 28px;
   z-index: 998;
   display: flex;
@@ -2742,7 +2742,7 @@ initializeHeroAnimations();
   --t: all 0.3s ease;
 }
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: clamp(14px, 1.2vw, 18px); }
 body { font-family: 'Inter', 'Segoe UI', sans-serif; color: var(--text-dark); background: #fff; overflow-x: hidden; line-height: 1.6; }
 h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; font-weight: 700; line-height: 1.2; }
 a { text-decoration: none; color: inherit; }
