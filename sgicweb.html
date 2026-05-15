@@ -2107,7 +2107,7 @@ document.addEventListener('click', function(e) {
   if (!href) return;
   const file = href.split('/').pop().split('?')[0].split('#')[0];
   if (SPA_LINKS.includes(file)) { e.preventDefault(); spaNavigate(file); return; }
-  if (file === 'sgicweb.html' || href === './sgicweb.html' || href === '#' || href === '') { e.preventDefault(); spaGoHome(); }
+  if (file === 'sgicweb.html' || href === './sgicweb.html' || href === '#' || href === '' || href === '#home') { e.preventDefault(); spaGoHome(); }
 });
 
 // Browser back/forward via hash change
