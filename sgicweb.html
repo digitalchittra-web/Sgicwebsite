@@ -2118,10 +2118,11 @@ window.addEventListener('hashchange', function() {
 });
 
 // On load: read hash to restore page after refresh
-(function() {
-  const hash = location.hash.slice(1);
+// DOMContentLoaded ensures all <template> elements are parsed before navigating
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = location.hash.slice(1);
   if (hash && SPA_LINKS.includes(hash)) spaNavigate(hash);
-})();
+});
 
 // NAVBAR SCROLL
 // ============================
