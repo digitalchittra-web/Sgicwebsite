@@ -2066,7 +2066,7 @@ function spaNavigate(file) {
     pc.classList.add('spa-in');
     requestAnimationFrame(function() { pc.classList.remove('spa-in'); });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    history.pushState({ spa: file }, '', '?spa=' + file);
+    history.replaceState({ spa: file }, '', '#' + file);
 
     _spaBar.style.width = '100%';
     setTimeout(function() { _spaBar.style.width = '0'; _spaBar.style.transition = 'none'; setTimeout(function(){ _spaBar.style.transition = 'width .3s ease'; }, 50); }, 400);
@@ -2084,7 +2084,7 @@ function spaGoHome() {
     pc.classList.remove('spa-out'); pc.classList.add('spa-in');
     requestAnimationFrame(function() { pc.classList.remove('spa-in'); });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    history.pushState({ spa: 'home' }, '', '/sgicweb.html');
+    history.replaceState({ spa: 'home' }, '', location.pathname);
 
     // Reinitialize all animations and observers
     setTimeout(function() { reinitializeHomeAnimations(); }, 50);
@@ -2105,20 +2105,23 @@ document.addEventListener('click', function(e) {
   if (!a) return;
   const href = a.getAttribute('href');
   if (!href) return;
-  const file = href.split('/').pop().split('?')[0];
+  const file = href.split('/').pop().split('?')[0].split('#')[0];
   if (SPA_LINKS.includes(file)) { e.preventDefault(); spaNavigate(file); return; }
-  if (file === 'sgicweb.html' || href === './sgicweb.html') { e.preventDefault(); spaGoHome(); }
+  if (file === 'sgicweb.html' || href === './sgicweb.html' || href === '#' || href === '') { e.preventDefault(); spaGoHome(); }
 });
 
-// Browser back/forward
-window.addEventListener('popstate', function(e) {
-  if (e.state && e.state.spa && e.state.spa !== 'home') spaNavigate(e.state.spa);
-  else spaGoHome();
+// Browser back/forward via hash change
+window.addEventListener('hashchange', function() {
+  const hash = location.hash.slice(1);
+  if (hash && SPA_LINKS.includes(hash)) spaNavigate(hash);
+  else if (!hash) spaGoHome();
 });
 
-// Handle ?spa= param from direct file open redirect
-const _spaParam = new URLSearchParams(window.location.search).get('spa');
-if (_spaParam) spaNavigate(_spaParam);
+// On load: read hash to restore page after refresh
+(function() {
+  const hash = location.hash.slice(1);
+  if (hash && SPA_LINKS.includes(hash)) spaNavigate(hash);
+})();
 
 // NAVBAR SCROLL
 // ============================
