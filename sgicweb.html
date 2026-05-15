@@ -2066,7 +2066,7 @@ function spaNavigate(file) {
     pc.classList.add('spa-in');
     requestAnimationFrame(function() { pc.classList.remove('spa-in'); });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    history.pushState({ spa: file }, '', file);
+    history.pushState({ spa: file }, '', '?spa=' + file);
 
     _spaBar.style.width = '100%';
     setTimeout(function() { _spaBar.style.width = '0'; _spaBar.style.transition = 'none'; setTimeout(function(){ _spaBar.style.transition = 'width .3s ease'; }, 50); }, 400);
@@ -2084,7 +2084,7 @@ function spaGoHome() {
     pc.classList.remove('spa-out'); pc.classList.add('spa-in');
     requestAnimationFrame(function() { pc.classList.remove('spa-in'); });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    history.pushState({ spa: 'home' }, '', 'sgicweb.html');
+    history.pushState({ spa: 'home' }, '', '/sgicweb.html');
 
     // Reinitialize all animations and observers
     setTimeout(function() { reinitializeHomeAnimations(); }, 50);
