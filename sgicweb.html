@@ -54,28 +54,31 @@ img { max-width: 100%; display: block; }
    CUSTOM CURSOR
    ============================ */
 #cursor-dot {
-  position: fixed; top: -100px; left: -100px; pointer-events: none; z-index: 99999;
-  width: 10px; height: 10px; border-radius: 50%;
+  position: fixed; top: -200px; left: -200px; pointer-events: none; z-index: 99999;
+  width: 9px; height: 9px; border-radius: 50%;
   background: var(--primary);
   transform: translate(-50%, -50%);
-  transition: width 0.15s ease, height 0.15s ease, background 0.2s ease, transform 0.1s ease;
-  will-change: left, top;
+  transition: width 0.15s ease, height 0.15s ease, background 0.15s ease, transform 0.1s ease, opacity 0.2s ease;
 }
 #cursor-ring {
-  position: fixed; top: -100px; left: -100px; pointer-events: none; z-index: 99998;
-  width: 38px; height: 38px; border-radius: 50%;
-  border: 2px solid var(--primary);
+  position: fixed; top: -200px; left: -200px; pointer-events: none; z-index: 99998;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2.5px solid var(--primary);
   transform: translate(-50%, -50%);
-  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, top 0.08s linear, left 0.08s linear;
-  will-change: left, top;
-  opacity: 0.65;
+  transition: width 0.18s ease, height 0.18s ease, border-color 0.15s ease, opacity 0.2s ease;
+  opacity: 0.6;
 }
+/* On white/light bg → green (default, no class needed) */
+/* On dark/green bg → white */
 #cursor-dot.on-dark { background: #fff; }
-#cursor-ring.on-dark { border-color: rgba(255,255,255,0.85); }
-#cursor-dot.hovering { width: 6px; height: 6px; background: var(--secondary); }
-#cursor-ring.hovering { width: 56px; height: 56px; border-color: var(--secondary); opacity: 0.45; }
-#cursor-dot.clicking { transform: translate(-50%,-50%) scale(0.4); }
-#cursor-ring.clicking { width: 24px; height: 24px; opacity: 1; }
+#cursor-ring.on-dark { border-color: rgba(255,255,255,0.9); }
+/* Hover state */
+#cursor-dot.hovering { width: 5px; height: 5px; background: var(--secondary); }
+#cursor-ring.hovering { width: 52px; height: 52px; border-color: var(--secondary); opacity: 0.4; }
+#cursor-ring.on-dark.hovering { border-color: #fff; }
+/* Click state */
+#cursor-dot.clicking { transform: translate(-50%,-50%) scale(0.3); }
+#cursor-ring.clicking { width: 22px; height: 22px; opacity: 1; }
 @media (pointer: coarse) {
   #cursor-dot, #cursor-ring { display: none !important; }
   body, a, button, input, select, textarea { cursor: auto !important; }
@@ -2167,38 +2170,33 @@ document.addEventListener('DOMContentLoaded', function() {
   var ring = document.getElementById('cursor-ring');
   if (!dot || !ring) return;
 
-  var mx = -100, my = -100, rx = -100, ry = -100;
-  var rafId;
+  var mx = -200, my = -200;
 
-  // Smoothly lag the ring behind the dot
-  function animateRing() {
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    rafId = requestAnimationFrame(animateRing);
-  }
-  animateRing();
-
+  // Both dot and ring move in perfect sync on every mousemove
   document.addEventListener('mousemove', function(e) {
     mx = e.clientX; my = e.clientY;
-    dot.style.left = mx + 'px';
-    dot.style.top  = my + 'px';
 
-    // Detect if cursor is over a dark/green background
+    dot.style.left  = mx + 'px';
+    dot.style.top   = my + 'px';
+    ring.style.left = mx + 'px';
+    ring.style.top  = my + 'px';
+
+    // Detect background color under cursor
     var el = document.elementFromPoint(mx, my);
     var onDark = false;
     if (el) {
       var node = el;
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 6; i++) {
         if (!node || node === document.documentElement) break;
         var bg = window.getComputedStyle(node).backgroundColor;
-        var m  = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        var m  = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*([\d.]*)\)/);
         if (m) {
+          var alpha = m[4] === '' || m[4] === undefined ? 1 : parseFloat(m[4]);
+          if (alpha < 0.05) { node = node.parentElement; continue; } // skip transparent
           var r = +m[1], g = +m[2], b = +m[3];
-          // Treat as dark if luminance is low OR if it's a green background
           var lum = 0.299*r + 0.587*g + 0.114*b;
-          if (lum < 100 || (g > r + 30 && g > b + 30 && g > 80)) { onDark = true; break; }
+          // Dark background OR green/primary background
+          if (lum < 160 && !(r > 200 && g > 200 && b > 200)) { onDark = true; break; }
         }
         node = node.parentElement;
       }
@@ -2208,7 +2206,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Hover effect on interactive elements
-  var hoverSel = 'a, button, [onclick], input, select, textarea, .prod-card, .nav-link, .dropdown a, .cov-item, .subprod-card';
+  var hoverSel = 'a, button, [onclick], input, select, textarea, .prod-card, .nav-link, .dropdown a, .cov-item, .subprod-card, .stat-card, .svc-card';
   document.addEventListener('mouseover', function(e) {
     if (e.target.closest(hoverSel)) {
       dot.classList.add('hovering');
@@ -2232,12 +2230,14 @@ document.addEventListener('DOMContentLoaded', function() {
     ring.classList.remove('clicking');
   });
 
-  // Hide when leaving window
+  // Hide when cursor leaves the window
   document.addEventListener('mouseleave', function() {
-    dot.style.opacity = '0'; ring.style.opacity = '0';
+    dot.style.opacity = '0';
+    ring.style.opacity = '0';
   });
   document.addEventListener('mouseenter', function() {
-    dot.style.opacity = '1'; ring.style.opacity = '';
+    dot.style.opacity = '1';
+    ring.style.opacity = '';
   });
 })();
 
