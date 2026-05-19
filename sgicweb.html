@@ -42,13 +42,44 @@
 
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; font-size: clamp(14px, 1.2vw, 18px); }
-body { font-family: 'Inter', 'Segoe UI', sans-serif; color: var(--text-dark); background: #fff; overflow-x: hidden; line-height: 1.6; }
+body { font-family: 'Inter', 'Segoe UI', sans-serif; color: var(--text-dark); background: #fff; overflow-x: hidden; line-height: 1.6; cursor: none; }
 h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; font-weight: 700; line-height: 1.2; }
-a { text-decoration: none; color: inherit; }
+a { text-decoration: none; color: inherit; cursor: none; }
 ul { list-style: none; }
-button { cursor: pointer; border: none; outline: none; font-family: inherit; }
-input, select, textarea { font-family: inherit; outline: none; }
+button { border: none; outline: none; font-family: inherit; cursor: none; }
+input, select, textarea { font-family: inherit; outline: none; cursor: none; }
 img { max-width: 100%; display: block; }
+
+/* ============================
+   CUSTOM CURSOR
+   ============================ */
+#cursor-dot {
+  position: fixed; top: -100px; left: -100px; pointer-events: none; z-index: 99999;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--primary);
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease, height 0.15s ease, background 0.2s ease, transform 0.1s ease;
+  will-change: left, top;
+}
+#cursor-ring {
+  position: fixed; top: -100px; left: -100px; pointer-events: none; z-index: 99998;
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 2px solid var(--primary);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, top 0.08s linear, left 0.08s linear;
+  will-change: left, top;
+  opacity: 0.65;
+}
+#cursor-dot.on-dark { background: #fff; }
+#cursor-ring.on-dark { border-color: rgba(255,255,255,0.85); }
+#cursor-dot.hovering { width: 6px; height: 6px; background: var(--secondary); }
+#cursor-ring.hovering { width: 56px; height: 56px; border-color: var(--secondary); opacity: 0.45; }
+#cursor-dot.clicking { transform: translate(-50%,-50%) scale(0.4); }
+#cursor-ring.clicking { width: 24px; height: 24px; opacity: 1; }
+@media (pointer: coarse) {
+  #cursor-dot, #cursor-ring { display: none !important; }
+  body, a, button, input, select, textarea { cursor: auto !important; }
+}
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
 
@@ -1110,6 +1141,10 @@ footer { background: #012a16; color: rgba(255,255,255,0.75); padding-top: 65px; 
 </head>
 <body>
 
+<!-- CUSTOM CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
 <!-- TOP BAR -->
 <div class="topbar" id="topBar">
   <div class="topbar-inner">
@@ -2123,6 +2158,88 @@ document.addEventListener('DOMContentLoaded', function() {
   var hash = location.hash.slice(1);
   if (hash && SPA_LINKS.includes(hash)) spaNavigate(hash);
 });
+
+// ============================
+// CUSTOM CURSOR
+// ============================
+(function() {
+  var dot  = document.getElementById('cursor-dot');
+  var ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+
+  var mx = -100, my = -100, rx = -100, ry = -100;
+  var rafId;
+
+  // Smoothly lag the ring behind the dot
+  function animateRing() {
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    rafId = requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top  = my + 'px';
+
+    // Detect if cursor is over a dark/green background
+    var el = document.elementFromPoint(mx, my);
+    var onDark = false;
+    if (el) {
+      var node = el;
+      for (var i = 0; i < 5; i++) {
+        if (!node || node === document.documentElement) break;
+        var bg = window.getComputedStyle(node).backgroundColor;
+        var m  = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        if (m) {
+          var r = +m[1], g = +m[2], b = +m[3];
+          // Treat as dark if luminance is low OR if it's a green background
+          var lum = 0.299*r + 0.587*g + 0.114*b;
+          if (lum < 100 || (g > r + 30 && g > b + 30 && g > 80)) { onDark = true; break; }
+        }
+        node = node.parentElement;
+      }
+    }
+    dot.classList.toggle('on-dark', onDark);
+    ring.classList.toggle('on-dark', onDark);
+  });
+
+  // Hover effect on interactive elements
+  var hoverSel = 'a, button, [onclick], input, select, textarea, .prod-card, .nav-link, .dropdown a, .cov-item, .subprod-card';
+  document.addEventListener('mouseover', function(e) {
+    if (e.target.closest(hoverSel)) {
+      dot.classList.add('hovering');
+      ring.classList.add('hovering');
+    }
+  });
+  document.addEventListener('mouseout', function(e) {
+    if (e.target.closest(hoverSel)) {
+      dot.classList.remove('hovering');
+      ring.classList.remove('hovering');
+    }
+  });
+
+  // Click effect
+  document.addEventListener('mousedown', function() {
+    dot.classList.add('clicking');
+    ring.classList.add('clicking');
+  });
+  document.addEventListener('mouseup', function() {
+    dot.classList.remove('clicking');
+    ring.classList.remove('clicking');
+  });
+
+  // Hide when leaving window
+  document.addEventListener('mouseleave', function() {
+    dot.style.opacity = '0'; ring.style.opacity = '0';
+  });
+  document.addEventListener('mouseenter', function() {
+    dot.style.opacity = '1'; ring.style.opacity = '';
+  });
+})();
 
 // NAVBAR SCROLL
 // ============================
