@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Calculator – Sanima GIC Insurance Ltd.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --primary: #026838;
+  --primary-light: #038a4a;
+  --primary-dark: #014d29;
+  --secondary: #ec8323;
+  --accent: #20c997;
+  --text-dark: #2c3e50;
+  --text-light: #687799;
+  --border: #e1e5ee;
+  --bg-alt: #f8faff;
+  --white: #ffffff;
+  --grad-primary: linear-gradient(135deg, #014d29 0%, #026838 100%);
+  --grad-hero: linear-gradient(135deg, #012a16 0%, #014d29 50%, #026838 100%);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 8px 25px rgba(0,0,0,0.10);
+  --shadow-blue: 0 8px 30px rgba(2,104,56,0.3);
+  --r-md: 12px;
+  --r-lg: 20px;
+  --r-xl: 30px;
+  --t: all 0.3s ease;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'Inter', 'Segoe UI', sans-serif; color: var(--text-dark); background: #fff; overflow-x: hidden; line-height: 1.6; }
+h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; font-weight: 700; line-height: 1.2; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+input, select { font-family: inherit; outline: none; }
+
+/* ── CALCULATOR SECTION ── */
+.calc-section {
+  background: var(--grad-hero);
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 60px 0;
+}
+.calc-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 70% 50%, rgba(78,205,196,0.15) 0%, transparent 60%);
+}
+
+/* Floating shapes */
+.calc-shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+.calc-shape:nth-child(1) { width: 360px; height: 360px; top: -80px; right: -80px; }
+.calc-shape:nth-child(2) { width: 180px; height: 180px; bottom: 60px; left: -60px; }
+.calc-shape:nth-child(3) { width: 80px; height: 80px; top: 40%; left: 30%; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+/* ── LEFT SIDE ── */
+.calc-left { }
+.calc-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(32,201,151,0.15); border: 1px solid rgba(32,201,151,0.3);
+  color: var(--accent); padding: 6px 16px; border-radius: 50px;
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.calc-left h1 {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 900; color: #fff;
+  line-height: 1.1; margin-bottom: 18px;
+}
+.calc-left h1 span {
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.calc-left > p {
+  font-size: 17px; color: rgba(255,255,255,0.75);
+  margin-bottom: 36px; max-width: 460px;
+}
+.calc-feats { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+.cf-item { display: flex; align-items: center; gap: 14px; }
+.cf-icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  background: rgba(255,255,255,0.10); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 15px;
+}
+.cf-item span { color: rgba(255,255,255,0.85); font-size: 14.5px; }
+
+.calc-note {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--r-md); padding: 16px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.calc-note i { color: var(--secondary); margin-top: 2px; flex-shrink: 0; }
+.calc-note p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+
+/* ── CALCULATOR CARD ── */
+.calc-card {
+  background: #fff;
+  border-radius: var(--r-xl);
+  padding: 36px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+}
+.calc-card-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 26px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+}
+.calc-card-icon {
+  width: 48px; height: 48px; border-radius: var(--r-md);
+  background: rgba(2,104,56,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; color: var(--primary);
+}
+.calc-card-header h3 { font-size: 20px; font-weight: 700; color: var(--text-dark); }
+.calc-card-header p { font-size: 13px; color: var(--text-light); margin-top: 2px; }
+
+/* Form fields */
+.fg { margin-bottom: 16px; }
+.fg label {
+  display: block; font-size: 11.5px; font-weight: 700;
+  color: var(--text-dark); margin-bottom: 7px;
+  text-transform: uppercase; letter-spacing: 0.6px;
+}
+.fg select, .fg input {
+  width: 100%; padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--r-md); font-size: 14px; color: var(--text-dark);
+  background: var(--bg-alt); transition: var(--t);
+  -webkit-appearance: none; appearance: none;
+}
+.fg select:focus, .fg input:focus {
+  border-color: var(--primary); background: #fff;
+  box-shadow: 0 0 0 4px rgba(2,104,56,0.08);
+}
+.fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.toggle-row {
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--bg-alt); border-radius: var(--r-md);
+  padding: 14px 16px; margin-bottom: 16px;
+}
+.toggle-row label {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13.5px; font-weight: 500; color: var(--text-dark);
+  cursor: pointer; text-transform: none; letter-spacing: 0;
+}
+.toggle-row input[type="checkbox"] {
+  width: 16px; height: 16px; accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.btn-calc {
+  width: 100%; padding: 15px;
+  background: var(--grad-primary); color: #fff;
+  font-size: 15px; font-weight: 700; border-radius: var(--r-md);
+  box-shadow: var(--shadow-blue); transition: var(--t);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 4px;
+}
+.btn-calc:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(2,104,56,0.4); }
+.btn-calc i { font-size: 16px; }
+
+/* Result */
+.calc-result {
+  display: none;
+  background: linear-gradient(135deg, rgba(2,104,56,0.06) 0%, rgba(32,201,151,0.06) 100%);
+  border: 2px solid rgba(2,104,56,0.15);
+  border-radius: var(--r-md); padding: 20px 18px;
+  margin-top: 16px; text-align: center;
+  animation: fadeUp 0.4s ease;
+}
+.calc-result.show { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.cr-lbl { font-size: 12px; color: var(--text-light); margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600; }
+.cr-amt { font-size: 32px; font-weight: 900; color: var(--primary); font-family: 'Poppins', sans-serif; }
+.cr-note { font-size: 11.5px; color: var(--text-light); margin-top: 6px; }
+.cr-breakdown { margin-top: 12px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.cr-item { font-size: 12px; color: var(--text-light); }
+.cr-item strong { color: var(--text-dark); display: block; font-size: 13px; }
+
+/* Divider */
+.section-divider {
+  border: none; border-top: 1px solid rgba(255,255,255,0.12);
+  margin: 50px 0;
+}
+
+/* ── BACK LINK ── */
+.back-bar {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(1,42,22,0.95); backdrop-filter: blur(10px);
+  padding: 14px 30px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100; border-bottom: 2px solid var(--secondary);
+}
+.back-link {
+  display: flex; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.85); font-size: 13.5px; font-weight: 600;
+  transition: var(--t);
+}
+.back-link:hover { color: var(--secondary); }
+.back-logo { color: #fff; font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 16px; }
+.back-logo span { color: var(--secondary); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .calc-inner { grid-template-columns: 1fr; gap: 40px; }
+  .calc-left { text-align: center; }
+  .calc-left > p { margin: 0 auto 28px; }
+  .cf-item { justify-content: center; }
+  .calc-note { text-align: left; }
+}
+@media (max-width: 600px) {
+  .calc-section { padding: 80px 0 40px; }
+  .calc-card { padding: 24px 20px; }
+  .fg-row { grid-template-columns: 1fr; }
+  .calc-left h1 { font-size: 30px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back bar -->
+<div class="back-bar">
+  <a href="sgicweb.html" class="back-link" onclick="window.history.length > 1 ? history.back() : window.location='sgicweb.html'; return false;">
+    <i class="fas fa-arrow-left"></i> Back to Website
+  </a>
+  <div class="back-logo">Sanima <span>GIC</span> Insurance</div>
+</div>
+
+<!-- Calculator Section -->
+<section class="calc-section">
+  <div class="calc-shape"></div>
+  <div class="calc-shape"></div>
+  <div class="calc-shape"></div>
+
+  <div class="container">
+    <div class="calc-inner">
+
+      <!-- Left: Info -->
+      <div class="calc-left">
+        <div class="calc-badge"><i class="fas fa-calculator"></i> Premium Calculator</div>
+        <h1>Get Your Instant<br><span>Insurance Quote</span></h1>
+        <p>Calculate your premium in under 60 seconds. Transparent pricing, no hidden fees, no paperwork required.</p>
+
+        <div class="calc-feats">
+          <div class="cf-item">
+            <div class="cf-icon"><i class="fas fa-bolt"></i></div>
+            <span>Instant results — no waiting required</span>
+          </div>
+          <div class="cf-item">
+            <div class="cf-icon"><i class="fas fa-lock"></i></div>
+            <span>100% secure and confidential</span>
+          </div>
+          <div class="cf-item">
+            <div class="cf-icon"><i class="fas fa-tag"></i></div>
+            <span>Competitive premiums with maximum coverage</span>
+          </div>
+          <div class="cf-item">
+            <div class="cf-icon"><i class="fas fa-headset"></i></div>
+            <span>Expert advisors available to assist you</span>
+          </div>
+          <div class="cf-item">
+            <div class="cf-icon"><i class="fas fa-file-invoice"></i></div>
+            <span>Includes VAT, stamp duty & all applicable charges</span>
+          </div>
+        </div>
+
+        <div class="calc-note">
+          <i class="fas fa-info-circle"></i>
+          <p>This calculator provides an <strong>indicative estimate</strong> only. Final premium is subject to underwriting review and may vary. Contact our team for an exact quote.</p>
+        </div>
+      </div>
+
+      <!-- Right: Calculator Card -->
+      <div class="calc-card">
+        <div class="calc-card-header">
+          <div class="calc-card-icon"><i class="fas fa-calculator"></i></div>
+          <div>
+            <h3>Premium Calculator</h3>
+            <p>Select your insurance type to begin</p>
+          </div>
+        </div>
+
+        <!-- Insurance Type -->
+        <div class="fg">
+          <label>Insurance Type</label>
+          <select id="cType" onchange="updateCalc()">
+            <option value="">— Select Insurance Type —</option>
+            <option value="motorcycle">Motorcycle</option>
+            <option value="vehicle">Private Car</option>
+            <option value="goods">Goods Carrier</option>
+            <option value="passenger">Passenger Vehicle</option>
+            <option value="taxi">Taxi</option>
+            <option value="travel">Travel Medical</option>
+          </select>
+        </div>
+
+        <!-- Vehicle fields -->
+        <div id="cf-vehicle-section" style="display:none">
+          <div class="fg-row">
+            <div class="fg">
+              <label id="cc-label">Cubic Capacity (CC)</label>
+              <input type="number" id="cc" placeholder="e.g. 150" oninput="calcPremium()">
+            </div>
+            <div class="fg">
+              <label id="age-label">Age of Vehicle (Years)</label>
+              <input type="number" id="age" placeholder="e.g. 3" min="0" oninput="calcPremium()">
+            </div>
+          </div>
+          <div class="fg">
+            <label id="si-label">Sum Insured (NPR)</label>
+            <input type="number" id="si" placeholder="e.g. 250,000" oninput="calcPremium()">
+          </div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>EOD / Excess Amount</label>
+              <select id="eod" onchange="calcPremium()" style="display:none">
+                <option value="0">0</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>No Claim Discount</label>
+              <select id="ncd" onchange="calcPremium()" style="display:none">
+                <option value="0">0%</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg-row" id="extra-fields" style="display:none">
+            <div class="fg">
+              <label id="extra1-label">Extra Field 1</label>
+              <input type="number" id="extra1" placeholder="0" oninput="calcPremium()">
+            </div>
+            <div class="fg">
+              <label id="extra2-label">Extra Field 2</label>
+              <input type="number" id="extra2" placeholder="0" oninput="calcPremium()">
+            </div>
+          </div>
+          <div class="toggle-row" id="toggle-fields" style="display:none">
+            <label>
+              <input type="checkbox" id="toggle1" onchange="calcPremium()">
+              <span id="toggle1-label">Option 1</span>
+            </label>
+            <label>
+              <input type="checkbox" id="toggle2" onchange="calcPremium()">
+              <span id="toggle2-label">Option 2</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Travel fields -->
+        <div id="cf-travel-section" style="display:none">
+          <div class="fg-row">
+            <div class="fg">
+              <label>Age (Years)</label>
+              <input type="number" id="travel-age" min="5" max="70" placeholder="e.g. 30" oninput="calcPremium()">
+            </div>
+            <div class="fg">
+              <label>Trip Duration (Days)</label>
+              <input type="number" id="travel-days" min="1" placeholder="e.g. 7" oninput="calcPremium()">
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>Plan</label>
+              <select id="travel-plan" onchange="calcPremium()">
+                <option value="10">Plan 10 – Standard</option>
+                <option value="20">Plan 20 – Gold</option>
+                <option value="30">Plan 30 – Premium</option>
+                <option value="40">Plan 40 – Asia</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>Cover Level</label>
+              <select id="travel-cover" onchange="calcPremium()">
+                <option value="1">Cover 1</option>
+                <option value="2">Cover 2</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg">
+            <label>USD Rate (NPR)</label>
+            <input type="number" id="usd-rate" value="133" placeholder="USD rate" oninput="calcPremium()">
+          </div>
+        </div>
+
+        <!-- Calculate Button -->
+        <button class="btn-calc" onclick="calcPremium()">
+          <i class="fas fa-calculator"></i> Calculate Premium
+        </button>
+
+        <!-- Result -->
+        <div class="calc-result" id="calcRes">
+          <div class="cr-lbl">Estimated Premium (incl. VAT)</div>
+          <div class="cr-amt" id="crAmt">NPR 0</div>
+          <div class="cr-breakdown" id="crBreakdown"></div>
+          <div class="cr-note">* Indicative amount. Final premium subject to underwriting review.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+function updateCalc() {
+  const t = document.getElementById('cType').value;
+  document.getElementById('cf-vehicle-section').style.display =
+    ['motorcycle','vehicle','goods','passenger','taxi'].includes(t) ? 'block' : 'none';
+  document.getElementById('cf-travel-section').style.display = t === 'travel' ? 'block' : 'none';
+  setupCalculatorFields(t);
+  document.getElementById('calcRes').classList.remove('show');
+}
+
+function setupCalculatorFields(type) {
+  const eodSel = document.getElementById('eod');
+  const ncdSel = document.getElementById('ncd');
+  const extraFields = document.getElementById('extra-fields');
+  const toggleFields = document.getElementById('toggle-fields');
+
+  eodSel.style.display = 'none'; ncdSel.style.display = 'none';
+  extraFields.style.display = 'none'; toggleFields.style.display = 'none';
+
+  if (type === 'motorcycle') {
+    document.getElementById('cc-label').textContent = 'Cubic Capacity (CC)';
+    document.getElementById('age-label').textContent = 'Age of Vehicle (Years)';
+    document.getElementById('si-label').textContent = 'Sum Insured (NPR)';
+    eodSel.innerHTML = '<option value="0">NPR 0</option><option value="500">NPR 500</option><option value="1000">NPR 1,000</option><option value="2000">NPR 2,000</option><option value="10000">NPR 10,000</option>';
+    ncdSel.innerHTML = '<option value="0">0%</option><option value="15">15%</option><option value="25">25%</option><option value="35">35%</option>';
+    eodSel.style.display = 'block'; ncdSel.style.display = 'block';
+    toggleFields.style.display = 'flex';
+    document.getElementById('toggle1-label').textContent = 'Direct Business';
+    document.getElementById('toggle2-label').textContent = 'RSMD / Terrorism';
+  } else if (type === 'vehicle') {
+    document.getElementById('cc-label').textContent = 'Cubic Capacity (CC)';
+    document.getElementById('age-label').textContent = 'Age of Vehicle (Years)';
+    document.getElementById('si-label').textContent = 'Sum Insured (NPR)';
+    eodSel.innerHTML = '<option value="0">NPR 0</option><option value="1000">NPR 1,000</option><option value="2000">NPR 2,000</option><option value="5000">NPR 5,000</option>';
+    ncdSel.innerHTML = '<option value="0">0%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="45">45%</option><option value="50">50%</option>';
+    eodSel.style.display = 'block'; ncdSel.style.display = 'block';
+    extraFields.style.display = 'grid'; toggleFields.style.display = 'flex';
+    document.getElementById('extra1-label').textContent = 'Unnamed Passengers';
+    document.getElementById('extra2-label').textContent = 'Unnamed Drivers';
+    document.getElementById('toggle1-label').textContent = 'Private Hire';
+    document.getElementById('toggle2-label').textContent = 'Towing Charge';
+  } else if (type === 'goods') {
+    document.getElementById('cc-label').textContent = 'Goods Capacity (Tons)';
+    document.getElementById('age-label').textContent = 'Age of Vehicle (Years)';
+    document.getElementById('si-label').textContent = 'Sum Insured (NPR)';
+    eodSel.innerHTML = '<option value="0">NPR 0</option><option value="1000">NPR 1,000</option><option value="2000">NPR 2,000</option><option value="5000">NPR 5,000</option><option value="10000">NPR 10,000</option>';
+    ncdSel.innerHTML = '<option value="0">0%</option><option value="15">15%</option><option value="25">25%</option><option value="30">30%</option>';
+    eodSel.style.display = 'block'; ncdSel.style.display = 'block';
+    extraFields.style.display = 'grid'; toggleFields.style.display = 'flex';
+    document.getElementById('extra1-label').textContent = 'Unnamed Helpers';
+    document.getElementById('extra2-label').textContent = 'Unnamed Drivers';
+    document.getElementById('toggle1-label').textContent = 'Own Goods Carrying';
+    document.getElementById('toggle2-label').textContent = 'Towing Charge';
+  } else if (type === 'passenger') {
+    document.getElementById('cc-label').textContent = 'Passenger Capacity (Seats)';
+    document.getElementById('age-label').textContent = 'Age of Vehicle (Years)';
+    document.getElementById('si-label').textContent = 'Sum Insured (NPR)';
+    eodSel.innerHTML = '<option value="0">NPR 0</option><option value="1000">NPR 1,000</option><option value="2000">NPR 2,000</option><option value="5000">NPR 5,000</option><option value="10000">NPR 10,000</option>';
+    ncdSel.innerHTML = '<option value="0">0%</option><option value="15">15%</option><option value="25">25%</option><option value="30">30%</option>';
+    eodSel.style.display = 'block'; ncdSel.style.display = 'block';
+    extraFields.style.display = 'grid'; toggleFields.style.display = 'flex';
+    document.getElementById('extra1-label').textContent = 'Unnamed Helpers';
+    document.getElementById('extra2-label').textContent = 'Unnamed Drivers';
+    document.getElementById('toggle1-label').textContent = 'Own Passengers';
+    document.getElementById('toggle2-label').textContent = 'Towing Charge';
+  } else if (type === 'taxi') {
+    document.getElementById('cc-label').textContent = 'Cubic Capacity (CC)';
+    document.getElementById('age-label').textContent = 'Age of Vehicle (Years)';
+    document.getElementById('si-label').textContent = 'Sum Insured (NPR)';
+    eodSel.innerHTML = '<option value="0">NPR 0</option><option value="1000">NPR 1,000</option><option value="2000">NPR 2,000</option><option value="5000">NPR 5,000</option>';
+    ncdSel.innerHTML = '<option value="0">0%</option><option value="20">20%</option><option value="30">30%</option><option value="40">40%</option><option value="45">45%</option><option value="50">50%</option>';
+    eodSel.style.display = 'block'; ncdSel.style.display = 'block';
+    extraFields.style.display = 'grid'; toggleFields.style.display = 'flex';
+    document.getElementById('extra1-label').textContent = 'Unnamed Passengers';
+    document.getElementById('extra2-label').textContent = 'Unnamed Drivers';
+    document.getElementById('toggle1-label').textContent = 'Private Hire';
+    document.getElementById('toggle2-label').textContent = 'Towing Charge';
+  }
+}
+
+function calcPremium() {
+  const type = document.getElementById('cType').value;
+  if (!type) return;
+  if (type === 'travel') calcTravelPremium();
+  else calcVehiclePremium(type);
+}
+
+function calcTravelPremium() {
+  const age  = parseFloat(document.getElementById('travel-age').value) || 0;
+  const days = parseFloat(document.getElementById('travel-days').value) || 0;
+  const plan = document.getElementById('travel-plan').value;
+  const cover = document.getElementById('travel-cover').value;
+  const usdRate = parseFloat(document.getElementById('usd-rate').value) || 133;
+  if (!age || !days) return;
+
+  const basePrices = { '10':{'1':20,'2':25}, '20':{'1':28,'2':35}, '30':{'1':35,'2':45}, '40':{'1':18,'2':22} };
+  const baseUSD = (basePrices[plan] && basePrices[plan][cover]) ? basePrices[plan][cover] : 20;
+  const premiumUSD = baseUSD * days;
+  const premium = premiumUSD * usdRate;
+  const stamp = 20;
+  const subtotal = premium + stamp;
+  const vat = subtotal * 0.13;
+  const total = subtotal + vat;
+
+  document.getElementById('crAmt').textContent = 'NPR ' + Math.round(total).toLocaleString('en-IN');
+  document.getElementById('crBreakdown').innerHTML =
+    `<div class="cr-item"><strong>NPR ${Math.round(premium).toLocaleString('en-IN')}</strong>Base Premium</div>` +
+    `<div class="cr-item"><strong>NPR ${Math.round(vat).toLocaleString('en-IN')}</strong>VAT (13%)</div>` +
+    `<div class="cr-item"><strong>NPR ${stamp}</strong>Stamp Duty</div>`;
+  document.getElementById('calcRes').classList.add('show');
+}
+
+function calcVehiclePremium(type) {
+  const cc     = parseFloat(document.getElementById('cc').value) || 0;
+  const age    = parseFloat(document.getElementById('age').value) || 0;
+  const si     = parseFloat(document.getElementById('si').value) || 0;
+  const eod    = parseFloat(document.getElementById('eod').value) || 0;
+  const ncd    = parseFloat(document.getElementById('ncd').value) || 0;
+  const toggle1 = document.getElementById('toggle1').checked;
+  const toggle2 = document.getElementById('toggle2').checked;
+  const extra1  = parseFloat(document.getElementById('extra1').value) || 0;
+  const extra2  = parseFloat(document.getElementById('extra2').value) || 0;
+  if (!si || !cc) return;
+
+  let premium = 0;
+
+  if (type === 'motorcycle') {
+    const basic = si * 0.015;
+    let ageLoading = 0;
+    if (age > 10) ageLoading = basic * 0.25;
+    else if (age > 5) ageLoading = basic * 0.15;
+    const adjusted = basic + ageLoading;
+    let eodDisc = 0;
+    if (eod >= 2000) eodDisc = adjusted * 0.20;
+    else if (eod >= 500) eodDisc = adjusted * 0.10;
+    const afterEOD = adjusted - eodDisc;
+    const ncdDisc = afterEOD * (ncd / 100);
+    const afterNCD = afterEOD - ncdDisc;
+    const directDisc = toggle1 ? afterNCD * 0.10 : 0;
+    let odPremium = Math.max(afterNCD - directDisc, 1000);
+    let tpBase = 1500;
+    if (cc > 250) tpBase = 1900;
+    else if (cc >= 150) tpBase = 1700;
+    const rsmdCharge = toggle2 ? 250 : 0;
+    premium = odPremium + tpBase + rsmdCharge;
+
+  } else if (type === 'vehicle') {
+    let baseRate = 0.84;
+    if (cc > 1600) baseRate = 0.90;
+    else if (cc > 1000) baseRate = 0.87;
+    let basic = si * (baseRate / 100);
+    if (age > 10) basic += basic * 0.10;
+    let eodDisc = 0;
+    if (eod >= 5000) eodDisc = basic * 0.25;
+    else if (eod >= 2000) eodDisc = basic * 0.20;
+    else if (eod >= 1000) eodDisc = basic * 0.15;
+    else if (eod > 0) eodDisc = basic * 0.10;
+    let adjusted = basic - eodDisc;
+    adjusted -= adjusted * (ncd / 100);
+    if (toggle1) adjusted += adjusted * 0.10;
+    if (toggle2) adjusted -= adjusted * 0.10;
+    let tpBase = 3000;
+    if (cc > 1600) tpBase = 6000;
+    else if (cc > 1000) tpBase = 5000;
+    premium = Math.max(adjusted, 2000) + tpBase + (extra1 * 350) + (extra2 * 350);
+
+  } else if (type === 'goods') {
+    let basic = si * 0.0125;
+    if (cc <= 3) basic -= 1500;
+    else basic += (cc - 3) * 500 - 3000;
+    basic = Math.max(basic, 1000);
+    if (age > 10) basic += basic * 0.20;
+    else if (age >= 5) basic += basic * 0.10;
+    let eodDisc = 0;
+    if (eod >= 5000) eodDisc = basic * 0.25;
+    else if (eod >= 2000) eodDisc = basic * 0.20;
+    else if (eod >= 1000) eodDisc = basic * 0.15;
+    else if (eod > 0) eodDisc = basic * 0.10;
+    let adjusted = basic - eodDisc;
+    adjusted -= adjusted * (ncd / 100);
+    if (toggle1) adjusted -= adjusted * 0.25;
+    if (toggle2) adjusted -= adjusted * 0.10;
+    let tpBase = cc > 3 ? 10000 : 6500;
+    premium = Math.max(adjusted, 1000) + tpBase + (extra1 * 700) + (extra2 * 700);
+
+  } else if (type === 'passenger') {
+    const minPrem = cc <= 18 ? 2000 : 2500;
+    let basic = Math.max(si * 0.0125, minPrem);
+    if (age > 10) basic += basic * 0.20;
+    else if (age >= 5) basic += basic * 0.10;
+    let eodDisc = 0;
+    if (eod >= 5000) eodDisc = basic * 0.25;
+    else if (eod >= 2000) eodDisc = basic * 0.20;
+    else if (eod >= 1000) eodDisc = basic * 0.15;
+    else if (eod > 0) eodDisc = basic * 0.10;
+    let adjusted = basic - eodDisc;
+    adjusted -= adjusted * (ncd / 100);
+    if (toggle1) adjusted += adjusted * 0.25;
+    if (toggle2) adjusted += 500;
+    let tpBase = 6500;
+    if (cc > 35) tpBase = 10000;
+    else if (cc > 18) tpBase = 9000;
+    else if (cc > 14) tpBase = 7500;
+    premium = adjusted + tpBase + (extra1 * 700) + (extra2 * 700);
+
+  } else if (type === 'taxi') {
+    let basePrem = cc > 1600 ? 500 : 1000;
+    let basic = basePrem + (si * 0.02);
+    if (age > 10) basic += basic * 0.10;
+    let eodDisc = 0;
+    if (eod >= 2000) eodDisc = basic * 0.20;
+    else if (eod >= 1000) eodDisc = basic * 0.15;
+    else if (eod > 0) eodDisc = basic * 0.10;
+    let adjusted = basic - eodDisc;
+    adjusted -= adjusted * (ncd / 100);
+    if (toggle1) adjusted += adjusted * 0.10;
+    if (toggle2) adjusted += 500;
+    let tpBase = 3500;
+    if (cc > 1600) tpBase = 6500;
+    else if (cc > 1000) tpBase = 5000;
+    premium = adjusted + tpBase + (extra1 * 700) + (extra2 * 700);
+  }
+
+  const stamp = 20;
+  const subtotal = premium + stamp;
+  const vat = subtotal * 0.13;
+  const total = subtotal + vat;
+
+  document.getElementById('crAmt').textContent = 'NPR ' + Math.round(total).toLocaleString('en-IN');
+  document.getElementById('crBreakdown').innerHTML =
+    `<div class="cr-item"><strong>NPR ${Math.round(premium).toLocaleString('en-IN')}</strong>Base Premium</div>` +
+    `<div class="cr-item"><strong>NPR ${Math.round(vat).toLocaleString('en-IN')}</strong>VAT (13%)</div>` +
+    `<div class="cr-item"><strong>NPR ${stamp}</strong>Stamp Duty</div>`;
+  document.getElementById('calcRes').classList.add('show');
+}
+</script>
+</body>
+</html>
