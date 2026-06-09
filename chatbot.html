@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGIC Assistant – Sanima GIC Insurance</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+/* ── VARIABLES ── */
+:root {
+  --primary:       #026838;
+  --primary-dark:  #014d29;
+  --primary-light: #038a4a;
+  --secondary:     #ec8323;
+  --accent:        #20c997;
+  --text-dark:     #1a1a2e;
+  --text-mid:      #4a5568;
+  --text-light:    #718096;
+  --border:        #e2e8f0;
+  --bg:            #f7fafc;
+  --white:         #ffffff;
+  --bot-bg:        #f0fdf4;
+  --user-bg:       var(--primary);
+  --shadow:        0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg:     0 20px 60px rgba(0,0,0,0.15);
+  --r-sm:          8px;
+  --r-md:          14px;
+  --r-lg:          20px;
+  --r-xl:          28px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-dark); overflow: hidden; }
+
+/* ── LAYOUT ── */
+.chat-app {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--primary-dark);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-logo {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px;
+}
+.logo-icon {
+  width: 44px; height: 44px; border-radius: var(--r-sm);
+  background: linear-gradient(135deg, var(--secondary), #f09a45);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: #fff; flex-shrink: 0;
+}
+.logo-text h2 { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 800; color: #fff; }
+.logo-text span { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+
+.new-chat-btn {
+  width: 100%; padding: 11px 16px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--r-md);
+  color: rgba(255,255,255,0.85);
+  font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s ease;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Inter', sans-serif;
+}
+.new-chat-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.new-chat-btn i { font-size: 13px; }
+
+.sidebar-section { padding: 18px 24px 8px; }
+.sidebar-section-label {
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px;
+  color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 10px;
+}
+
+.suggested-list { display: flex; flex-direction: column; gap: 4px; }
+.suggested-item {
+  padding: 10px 12px; border-radius: var(--r-sm);
+  font-size: 13px; color: rgba(255,255,255,0.7);
+  cursor: pointer; transition: all 0.2s ease;
+  border: 1px solid transparent;
+  display: flex; align-items: center; gap: 10px;
+  line-height: 1.4;
+}
+.suggested-item i { font-size: 13px; color: var(--secondary); flex-shrink: 0; width: 16px; }
+.suggested-item:hover { background: rgba(255,255,255,0.07); color: #fff; border-color: rgba(255,255,255,0.08); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.sidebar-footer p { font-size: 11.5px; color: rgba(255,255,255,0.35); line-height: 1.6; text-align: center; }
+.sidebar-footer a { color: var(--secondary); text-decoration: none; }
+
+/* ── MAIN CHAT ── */
+.chat-main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Header */
+.chat-header {
+  background: var(--white);
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+.chat-header-left { display: flex; align-items: center; gap: 14px; }
+.bot-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #fff; flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(2,104,56,0.3);
+}
+.chat-header-info h3 { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-dark); }
+.status-row { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+.status-row span { font-size: 12px; color: var(--text-light); }
+
+.header-actions { display: flex; gap: 8px; }
+.header-btn {
+  width: 36px; height: 36px; border-radius: var(--r-sm);
+  background: var(--bg); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: var(--text-light);
+  cursor: pointer; transition: all 0.2s ease;
+}
+.header-btn:hover { background: rgba(2,104,56,0.08); color: var(--primary); border-color: rgba(2,104,56,0.2); }
+
+/* Messages */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 28px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* Welcome state */
+.welcome-screen {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; flex: 1; text-align: center;
+  padding: 40px 20px;
+}
+.welcome-icon {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; color: #fff; margin-bottom: 20px;
+  box-shadow: 0 12px 36px rgba(2,104,56,0.3);
+}
+.welcome-screen h2 { font-family: 'Poppins', sans-serif; font-size: 24px; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+.welcome-screen p { font-size: 15px; color: var(--text-mid); max-width: 420px; line-height: 1.7; margin-bottom: 32px; }
+
+.quick-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 560px; }
+.chip {
+  padding: 10px 16px; border-radius: 50px;
+  background: var(--white); border: 1.5px solid var(--border);
+  font-size: 13px; color: var(--text-mid); cursor: pointer;
+  transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+  display: flex; align-items: center; gap: 7px;
+}
+.chip i { color: var(--primary); font-size: 12px; }
+.chip:hover { border-color: var(--primary); color: var(--primary); background: rgba(2,104,56,0.04); transform: translateY(-1px); }
+
+/* Message rows */
+.msg-row { display: flex; gap: 12px; align-items: flex-end; max-width: 780px; }
+.msg-row.user { flex-direction: row-reverse; margin-left: auto; }
+
+.msg-avatar {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.msg-row.bot .msg-avatar { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; }
+.msg-row.user .msg-avatar { background: linear-gradient(135deg, var(--secondary), #f09a45); color: #fff; font-size: 12px; }
+
+.msg-content { display: flex; flex-direction: column; gap: 4px; max-width: calc(100% - 44px); }
+.msg-row.user .msg-content { align-items: flex-end; }
+
+.msg-bubble {
+  padding: 13px 16px;
+  border-radius: var(--r-md);
+  font-size: 14.5px; line-height: 1.65;
+  word-break: break-word;
+}
+.msg-row.bot .msg-bubble {
+  background: var(--white); border: 1px solid var(--border);
+  color: var(--text-dark);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow);
+}
+.msg-row.user .msg-bubble {
+  background: var(--primary);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.msg-bubble ul { padding-left: 18px; margin-top: 6px; }
+.msg-bubble li { margin-bottom: 4px; }
+.msg-bubble strong { font-weight: 600; }
+.msg-bubble a { color: var(--secondary); text-decoration: underline; }
+
+.msg-time { font-size: 11px; color: var(--text-light); padding: 0 4px; }
+
+/* Source tags */
+.msg-sources { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.source-tag {
+  font-size: 11px; padding: 3px 10px; border-radius: 20px;
+  background: rgba(2,104,56,0.07); color: var(--primary);
+  border: 1px solid rgba(2,104,56,0.15); font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* Typing indicator */
+.typing-bubble { display: flex; align-items: center; gap: 5px; padding: 14px 16px; }
+.typing-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--primary); opacity: 0.5;
+  animation: typingBounce 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce { 0%,80%,100% { transform: translateY(0); opacity: 0.5; } 40% { transform: translateY(-6px); opacity: 1; } }
+
+/* ── INPUT AREA ── */
+.chat-input-area {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 16px 28px 20px;
+  flex-shrink: 0;
+}
+.input-wrapper {
+  display: flex; align-items: flex-end; gap: 12px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 10px 14px 10px 18px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.input-wrapper:focus-within {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(2,104,56,0.08);
+  background: var(--white);
+}
+.chat-textarea {
+  flex: 1; border: none; background: transparent;
+  font-family: 'Inter', sans-serif; font-size: 14.5px;
+  color: var(--text-dark); resize: none; outline: none;
+  max-height: 120px; min-height: 24px; line-height: 1.5;
+  padding: 2px 0;
+}
+.chat-textarea::placeholder { color: var(--text-light); }
+.send-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--primary);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 15px; flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.send-btn:hover { background: var(--primary-light); transform: scale(1.05); }
+.send-btn:disabled { background: var(--border); cursor: not-allowed; transform: none; }
+
+.input-footer {
+  display: flex; justify-content: center; margin-top: 10px;
+}
+.input-footer p { font-size: 11.5px; color: var(--text-light); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .chat-app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .chat-header { padding: 14px 18px; }
+  .chat-messages { padding: 20px 16px 10px; }
+  .chat-input-area { padding: 12px 16px 16px; }
+  .welcome-screen h2 { font-size: 20px; }
+  .quick-chips { gap: 8px; }
+  .chip { font-size: 12px; padding: 8px 14px; }
+}
+</style>
+</head>
+<body>
+
+<div class="chat-app">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="logo-text">
+          <h2>SGIC Assistant</h2>
+          <span>Sanima GIC Insurance</span>
+        </div>
+      </div>
+      <button class="new-chat-btn" onclick="newChat()">
+        <i class="fas fa-plus"></i> New Conversation
+      </button>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Quick Questions</div>
+      <div class="suggested-list">
+        <div class="suggested-item" onclick="askQuestion('What types of insurance does Sanima GIC offer?')">
+          <i class="fas fa-list-alt"></i> Insurance types available
+        </div>
+        <div class="suggested-item" onclick="askQuestion('How do I file a claim with Sanima GIC?')">
+          <i class="fas fa-file-invoice"></i> How to file a claim
+        </div>
+        <div class="suggested-item" onclick="askQuestion('How is motor insurance premium calculated?')">
+          <i class="fas fa-calculator"></i> Premium calculation
+        </div>
+        <div class="suggested-item" onclick="askQuestion('What does property insurance cover?')">
+          <i class="fas fa-home"></i> Property coverage
+        </div>
+        <div class="suggested-item" onclick="askQuestion('What is third-party liability insurance?')">
+          <i class="fas fa-users"></i> Third-party liability
+        </div>
+        <div class="suggested-item" onclick="askQuestion('How do I contact Sanima GIC?')">
+          <i class="fas fa-phone-alt"></i> Contact information
+        </div>
+        <div class="suggested-item" onclick="askQuestion('What is No Claim Discount (NCD)?')">
+          <i class="fas fa-percentage"></i> No Claim Discount
+        </div>
+        <div class="suggested-item" onclick="askQuestion('Does Sanima GIC offer travel insurance?')">
+          <i class="fas fa-plane"></i> Travel insurance
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <p>SGIC Assistant only answers questions about Sanima GIC and general insurance topics.<br>
+      <a href="sgicweb.html">← Back to website</a></p>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CHAT ── -->
+  <main class="chat-main">
+
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="bot-avatar"><i class="fas fa-robot"></i></div>
+        <div class="chat-header-info">
+          <h3>SGIC Assistant</h3>
+          <div class="status-row">
+            <div class="status-dot"></div>
+            <span>Online — Insurance & Claims Expert</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn" title="Clear chat" onclick="newChat()"><i class="fas fa-trash-alt"></i></button>
+        <a href="sgicweb.html" class="header-btn" title="Back to website"><i class="fas fa-arrow-left"></i></a>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-messages" id="chatMessages">
+
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-icon"><i class="fas fa-shield-alt"></i></div>
+        <h2>Hello! I'm SGIC Assistant</h2>
+        <p>I can help you with questions about <strong>Sanima GIC Insurance</strong> products, claims, premiums, coverage, and general insurance topics. How can I help you today?</p>
+        <div class="quick-chips">
+          <div class="chip" onclick="askQuestion('What types of insurance does Sanima GIC offer?')">
+            <i class="fas fa-list-alt"></i> Insurance types
+          </div>
+          <div class="chip" onclick="askQuestion('How do I file a claim?')">
+            <i class="fas fa-file-invoice"></i> File a claim
+          </div>
+          <div class="chip" onclick="askQuestion('How is motor insurance premium calculated?')">
+            <i class="fas fa-calculator"></i> Premium calculation
+          </div>
+          <div class="chip" onclick="askQuestion('What does motor insurance cover?')">
+            <i class="fas fa-car"></i> Motor coverage
+          </div>
+          <div class="chip" onclick="askQuestion('How do I contact Sanima GIC?')">
+            <i class="fas fa-phone-alt"></i> Contact us
+          </div>
+          <div class="chip" onclick="askQuestion('What is No Claim Discount?')">
+            <i class="fas fa-percentage"></i> No Claim Discount
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Input Area -->
+    <div class="chat-input-area">
+      <div class="input-wrapper">
+        <textarea
+          class="chat-textarea"
+          id="chatInput"
+          placeholder="Ask me about insurance, claims, premiums, coverage..."
+          rows="1"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <div class="input-footer">
+        <p><i class="fas fa-info-circle"></i> This assistant only answers questions about Sanima GIC Insurance and general insurance topics.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── STATE ──
+let isTyping = false;
+let chatStarted = false;
+
+// ── KNOWLEDGE BASE ──
+// Add your own responses here. Each entry has keywords and a response.
+const KB = [
+  {
+    keys: ['types', 'products', 'offer', 'available', 'insurance types', 'what insurance'],
+    response: `Sanima GIC Insurance offers the following insurance products:\n\n<ul><li><strong>Motor Insurance</strong> – Motorcycle, private car, commercial vehicles</li><li><strong>Property Insurance</strong> – Fire, natural disaster, theft coverage</li><li><strong>Marine Insurance</strong> – Cargo and vessel coverage</li><li><strong>Travel Medical Insurance</strong> – International travel protection</li><li><strong>Accidental & Medical Insurance</strong> – Personal accident and health</li><li><strong>Cattle & Crops Insurance</strong> – Agricultural coverage for farmers</li><li><strong>Engineering Insurance</strong> – Construction and machinery</li><li><strong>Miscellaneous Insurance</strong> – Various specialized products</li></ul>\n\nWould you like details on any specific product?`,
+    tags: ['Products']
+  },
+  {
+    keys: ['claim', 'claims', 'file a claim', 'how to claim', 'claim process', 'report accident'],
+    response: `To file a claim with Sanima GIC Insurance, follow these steps:\n\n<ul><li><strong>Step 1:</strong> Notify us immediately – Call <strong>+977-01-4527101</strong> or visit your nearest branch</li><li><strong>Step 2:</strong> Complete the claim form available at our office or website</li><li><strong>Step 3:</strong> Submit required documents (photos, police report if applicable, policy document)</li><li><strong>Step 4:</strong> Our surveyor will assess the claim</li><li><strong>Step 5:</strong> Settlement is processed within <strong>7 working days</strong> upon approval</li></ul>\n\nFor urgent assistance, please call us at <strong>+977-01-4527101</strong>.`,
+    tags: ['Claims']
+  },
+  {
+    keys: ['motor', 'vehicle', 'car', 'motorcycle', 'bike', 'automobile'],
+    response: `<strong>Motor Insurance</strong> by Sanima GIC covers:\n\n<ul><li>🔥 Fire & explosion damage</li><li>🌊 Natural disasters (flood, earthquake, landslide)</li><li>💥 Accidental damage</li><li>🔒 Theft & robbery</li><li>👥 Third-party liability</li><li>🏥 Personal accident cover for driver & passengers</li><li>⚠️ Riots, strikes & terrorism (optional)</li></ul>\n\nAvailable for motorcycles, private cars, and commercial vehicles. Premium is calculated based on sum insured, cubic capacity, and vehicle age.\n\nWould you like me to explain premium calculation?`,
+    tags: ['Motor Insurance']
+  },
+  {
+    keys: ['property', 'home', 'house', 'building', 'fire', 'property insurance'],
+    response: `<strong>Property Insurance</strong> from Sanima GIC protects your property against:\n\n<ul><li>🔥 Fire and explosion</li><li>⚡ Lightning strikes</li><li>🌊 Flood and water damage</li><li>🌍 Earthquake and natural disasters</li><li>🔒 Theft and burglary</li><li>💨 Windstorm and cyclone</li></ul>\n\nCoverage is available for residential homes, commercial buildings, offices, factories, and warehouses. The premium depends on the type of structure, construction material, and sum insured.`,
+    tags: ['Property Insurance']
+  },
+  {
+    keys: ['travel', 'abroad', 'international', 'travel medical', 'trip', 'travel insurance'],
+    response: `<strong>Travel Medical Insurance</strong> by Sanima GIC provides:\n\n<ul><li>🏥 Emergency medical expenses abroad</li><li>✈️ Trip cancellation & interruption</li><li>🧳 Lost or delayed baggage</li><li>⏰ Flight delays</li><li>🚨 Emergency evacuation</li><li>⚖️ Personal liability abroad</li></ul>\n\nPlans available:\n<ul><li><strong>Plan 10 – Standard</strong></li><li><strong>Plan 20 – Gold</strong></li><li><strong>Plan 30 – Premium</strong></li><li><strong>Plan 40 – Asia</strong> (for intra-Asia travel)</li></ul>\n\nPremium is calculated based on your age, trip duration, destination, and plan level.`,
+    tags: ['Travel Insurance']
+  },
+  {
+    keys: ['ncd', 'no claim', 'no claim discount', 'bonus', 'discount'],
+    response: `<strong>No Claim Discount (NCD)</strong> is a reward for not making any insurance claims during your policy period.\n\n<ul><li><strong>Motorcycle:</strong> Up to 35% discount</li><li><strong>Private Car:</strong> Up to 50% discount</li><li><strong>Commercial Vehicles:</strong> Up to 30% discount</li></ul>\n\nThe NCD accumulates over consecutive claim-free years, significantly reducing your renewal premium. It is one of the most effective ways to lower your insurance cost.`,
+    tags: ['NCD', 'Discounts']
+  },
+  {
+    keys: ['premium', 'calculate', 'cost', 'price', 'how much', 'rate', 'calculation'],
+    response: `Insurance premiums at Sanima GIC are calculated based on several factors:\n\n<strong>For Motor Insurance:</strong>\n<ul><li>Sum Insured (vehicle value)</li><li>Cubic Capacity (CC)</li><li>Age of vehicle</li><li>Excess/EOD amount chosen</li><li>No Claim Discount (NCD)</li></ul>\n\n<strong>For Property Insurance:</strong>\n<ul><li>Type and use of property</li><li>Construction material</li><li>Sum insured amount</li><li>Location</li></ul>\n\nYou can get an instant estimate using our <a href="premium-calculator.html" target="_blank">Premium Calculator</a>. Final premium is subject to underwriting.`,
+    tags: ['Premium', 'Calculation']
+  },
+  {
+    keys: ['third party', 'third-party', 'liability', 'tp'],
+    response: `<strong>Third-Party Liability Insurance</strong> covers damage or injury you cause to others:\n\n<ul><li>💔 Bodily injury to third parties</li><li>🚗 Damage to third-party vehicles/property</li><li>⚖️ Legal costs arising from liability claims</li></ul>\n\n<strong>In Nepal, Third-Party insurance is mandatory</strong> for all motor vehicles under the Motor Vehicles and Transport Management Act. Driving without it is a legal offence.\n\nSanima GIC's motor insurance includes third-party cover in all plans.`,
+    tags: ['Liability', 'Motor']
+  },
+  {
+    keys: ['contact', 'phone', 'address', 'office', 'branch', 'location', 'email', 'reach'],
+    response: `You can reach <strong>Sanima GIC Insurance</strong> through:\n\n<ul><li>📞 <strong>Phone:</strong> +977-01-4527101</li><li>🌐 <strong>Website:</strong> sgic.com.np</li><li>✉️ <strong>Email:</strong> info@sgic.com.np</li><li>📍 <strong>Head Office:</strong> Kathmandu, Nepal</li></ul>\n\nSanima GIC has <strong>50+ branches</strong> across all 7 provinces of Nepal. Visit our <a href="sgicweb.html#branches.html" target="_blank">Branches page</a> to find your nearest location.\n\nOffice hours: <strong>Sunday–Friday, 10:00 AM – 5:00 PM</strong>`,
+    tags: ['Contact']
+  },
+  {
+    keys: ['cattle', 'crop', 'agriculture', 'farm', 'livestock', 'farming'],
+    response: `<strong>Cattle & Crops Insurance</strong> by Sanima GIC protects Nepali farmers:\n\n<ul><li>🐄 <strong>Livestock coverage</strong> – Cattle, buffaloes, and other farm animals against death from disease, accident, or natural disaster</li><li>🌾 <strong>Crop coverage</strong> – Protection against crop failure due to drought, flood, hail, pest infestation, or natural disasters</li></ul>\n\nThis insurance is especially important for agricultural communities and is supported by government subsidy programs. Contact your nearest branch for eligibility details.`,
+    tags: ['Agriculture', 'Cattle & Crops']
+  },
+  {
+    keys: ['engineering', 'construction', 'machinery', 'project', 'contractor'],
+    response: `<strong>Engineering Insurance</strong> from Sanima GIC covers:\n\n<ul><li>🏗️ <strong>Contractor's All Risk (CAR)</strong> – Coverage for construction projects</li><li>⚙️ <strong>Erection All Risk (EAR)</strong> – For machinery installation</li><li>🔧 <strong>Machinery Breakdown</strong> – Industrial machinery failures</li><li>🖥️ <strong>Electronic Equipment Insurance</strong> – IT and electronic systems</li></ul>\n\nIdeal for contractors, builders, project developers, and businesses with heavy machinery.`,
+    tags: ['Engineering']
+  },
+  {
+    keys: ['marine', 'cargo', 'ship', 'vessel', 'shipping', 'import', 'export', 'transit'],
+    response: `<strong>Marine Insurance</strong> from Sanima GIC provides:\n\n<ul><li>📦 <strong>Cargo Insurance</strong> – Coverage for goods during import, export, and inland transit</li><li>🚢 <strong>Hull Insurance</strong> – Protection for vessels and watercraft</li><li>⚠️ Coverage against loss or damage from maritime perils, accidents, theft, and natural disasters</li></ul>\n\nEssential for businesses involved in importing/exporting goods through Nepal's ports of entry.`,
+    tags: ['Marine']
+  },
+  {
+    keys: ['about', 'sanima', 'sgic', 'company', 'history', 'who', 'established', 'founded'],
+    response: `<strong>Sanima GIC Insurance Ltd.</strong> is one of Nepal's leading general insurance companies.\n\n<ul><li>📅 Operating for <strong>24+ years</strong> in Nepal's insurance market</li><li>🏢 <strong>50+ branches</strong> across all 7 provinces</li><li>⭐ <strong>A+ credit rating</strong> from CRS Rating</li><li>🏆 Winner of multiple industry awards</li><li>📊 <strong>98% claims settlement rate</strong></li><li>👥 Serves hundreds of thousands of customers</li></ul>\n\nSanima GIC is regulated by the <strong>Insurance Board of Nepal (Beema Samiti)</strong> and all products are NIA approved.`,
+    tags: ['About SGIC']
+  },
+  {
+    keys: ['renew', 'renewal', 'policy renewal', 'expire', 'expired'],
+    response: `To renew your Sanima GIC Insurance policy:\n\n<ul><li>🌐 <strong>Online:</strong> Visit <a href="https://e.sgic.com.np" target="_blank">e.sgic.com.np</a> for instant renewal</li><li>📞 <strong>By Phone:</strong> Call +977-01-4527101</li><li>🏢 <strong>In Person:</strong> Visit any Sanima GIC branch</li></ul>\n\n<strong>Important:</strong> Renew before your policy expires to maintain continuous coverage and avoid losing your No Claim Discount (NCD). We recommend renewing at least <strong>7 days before expiry</strong>.`,
+    tags: ['Renewal']
+  },
+  {
+    keys: ['buy', 'purchase', 'get insurance', 'apply', 'new policy', 'online'],
+    response: `You can purchase Sanima GIC Insurance through multiple channels:\n\n<ul><li>🌐 <strong>Online Portal:</strong> <a href="https://e.sgic.com.np" target="_blank">e.sgic.com.np</a> – Buy instantly online</li><li>📞 <strong>Phone:</strong> +977-01-4527101</li><li>🏢 <strong>Branch:</strong> Walk in to any of our 50+ branches</li><li>🤝 <strong>Agent:</strong> Contact an authorized Sanima GIC agent</li></ul>\n\nYou'll need your vehicle registration (for motor), property details (for property), or travel documents (for travel) ready.`,
+    tags: ['Purchase']
+  },
+];
+
+// Off-topic detection keywords
+const OFF_TOPIC = ['weather', 'news', 'sports', 'cricket', 'football', 'movie', 'recipe', 'cook', 'programming', 'code', 'politics', 'stock market', 'crypto', 'bitcoin'];
+
+// ── FUNCTIONS ──
+function getCurrentTime() {
+  return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+}
+
+function hideWelcome() {
+  const ws = document.getElementById('welcomeScreen');
+  if (ws) { ws.style.display = 'none'; chatStarted = true; }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function scrollToBottom() {
+  const c = document.getElementById('chatMessages');
+  setTimeout(() => { c.scrollTop = c.scrollHeight; }, 50);
+}
+
+function addMessage(text, role, tags) {
+  hideWelcome();
+  const container = document.getElementById('chatMessages');
+  const row = document.createElement('div');
+  row.className = `msg-row ${role}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.innerHTML = role === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+
+  const content = document.createElement('div');
+  content.className = 'msg-content';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = text.replace(/\n/g, '<br>');
+
+  const time = document.createElement('div');
+  time.className = 'msg-time';
+  time.textContent = getCurrentTime();
+
+  content.appendChild(bubble);
+
+  if (tags && tags.length) {
+    const sources = document.createElement('div');
+    sources.className = 'msg-sources';
+    tags.forEach(tag => {
+      const t = document.createElement('span');
+      t.className = 'source-tag';
+      t.innerHTML = `<i class="fas fa-tag"></i> ${tag}`;
+      sources.appendChild(t);
+    });
+    content.appendChild(sources);
+  }
+
+  content.appendChild(time);
+  row.appendChild(avatar);
+  row.appendChild(content);
+  container.appendChild(row);
+  scrollToBottom();
+}
+
+function showTyping() {
+  hideWelcome();
+  const container = document.getElementById('chatMessages');
+  const row = document.createElement('div');
+  row.className = 'msg-row bot';
+  row.id = 'typingRow';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.innerHTML = '<i class="fas fa-robot"></i>';
+
+  const content = document.createElement('div');
+  content.className = 'msg-content';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = '<div class="typing-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+
+  content.appendChild(bubble);
+  row.appendChild(avatar);
+  row.appendChild(content);
+  container.appendChild(row);
+  scrollToBottom();
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingRow');
+  if (t) t.remove();
+}
+
+function getResponse(input) {
+  const lower = input.toLowerCase();
+
+  // Off-topic check
+  for (const word of OFF_TOPIC) {
+    if (lower.includes(word)) {
+      return {
+        text: `I'm sorry, I can only help with questions related to <strong>Sanima GIC Insurance</strong> and general insurance topics. I'm not able to assist with "${word}" related queries.\n\nTry asking me about:\n<ul><li>Insurance types and coverage</li><li>How to file a claim</li><li>Premium calculation</li><li>Policy renewal</li><li>Contact information</li></ul>`,
+        tags: []
+      };
+    }
+  }
+
+  // Match knowledge base
+  for (const item of KB) {
+    for (const key of item.keys) {
+      if (lower.includes(key)) {
+        return { text: item.response, tags: item.tags };
+      }
+    }
+  }
+
+  // Greetings
+  if (/^(hi|hello|hey|good morning|good afternoon|good evening|namaste)/i.test(lower.trim())) {
+    return {
+      text: `Hello! 👋 I'm the <strong>SGIC Assistant</strong>, here to help you with everything about Sanima GIC Insurance.\n\nI can assist you with:\n<ul><li>Insurance products and coverage details</li><li>Claims process and documents required</li><li>Premium calculation and discounts</li><li>Policy renewal and purchase</li><li>Branch locations and contact information</li></ul>\n\nWhat would you like to know?`,
+      tags: []
+    };
+  }
+
+  // Thank you
+  if (/thank|thanks|great|helpful|awesome/i.test(lower)) {
+    return {
+      text: `You're welcome! 😊 I'm glad I could help. If you have any more questions about Sanima GIC Insurance, feel free to ask anytime.\n\nYou can also:\n<ul><li>📞 Call us: <strong>+977-01-4527101</strong></li><li>🌐 Visit: <a href="https://e.sgic.com.np" target="_blank">e.sgic.com.np</a> to buy or renew online</li></ul>`,
+      tags: []
+    };
+  }
+
+  // Default fallback
+  return {
+    text: `I'm sorry, I didn't quite understand your question. I specialize in <strong>Sanima GIC Insurance</strong> and general insurance topics.\n\nYou can ask me about:\n<ul><li>🚗 Motor, property, or travel insurance</li><li>📋 Claims process and documents</li><li>💰 Premium calculation and NCD discounts</li><li>🔄 Policy renewal</li><li>📍 Branches and contact details</li></ul>\n\nOr call us directly at <strong>+977-01-4527101</strong> for personalized help.`,
+    tags: []
+  };
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text || isTyping) return;
+
+  addMessage(text, 'user');
+  input.value = '';
+  input.style.height = 'auto';
+
+  isTyping = true;
+  document.getElementById('sendBtn').disabled = true;
+  showTyping();
+
+  // Simulate thinking delay
+  const delay = 600 + Math.random() * 700;
+  setTimeout(() => {
+    removeTyping();
+    const res = getResponse(text);
+    addMessage(res.text, 'bot', res.tags);
+    isTyping = false;
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('chatInput').focus();
+  }, delay);
+}
+
+function askQuestion(q) {
+  document.getElementById('chatInput').value = q;
+  sendMessage();
+}
+
+function newChat() {
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = `
+    <div class="welcome-screen" id="welcomeScreen">
+      <div class="welcome-icon"><i class="fas fa-shield-alt"></i></div>
+      <h2>Hello! I'm SGIC Assistant</h2>
+      <p>I can help you with questions about <strong>Sanima GIC Insurance</strong> products, claims, premiums, coverage, and general insurance topics. How can I help you today?</p>
+      <div class="quick-chips">
+        <div class="chip" onclick="askQuestion('What types of insurance does Sanima GIC offer?')"><i class="fas fa-list-alt"></i> Insurance types</div>
+        <div class="chip" onclick="askQuestion('How do I file a claim?')"><i class="fas fa-file-invoice"></i> File a claim</div>
+        <div class="chip" onclick="askQuestion('How is motor insurance premium calculated?')"><i class="fas fa-calculator"></i> Premium calculation</div>
+        <div class="chip" onclick="askQuestion('What does motor insurance cover?')"><i class="fas fa-car"></i> Motor coverage</div>
+        <div class="chip" onclick="askQuestion('How do I contact Sanima GIC?')"><i class="fas fa-phone-alt"></i> Contact us</div>
+        <div class="chip" onclick="askQuestion('What is No Claim Discount?')"><i class="fas fa-percentage"></i> No Claim Discount</div>
+      </div>
+    </div>`;
+  chatStarted = false;
+}
+
+// Focus input on load
+window.addEventListener('load', () => {
+  document.getElementById('chatInput').focus();
+});
+</script>
+</body>
+</html>
