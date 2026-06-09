@@ -70,7 +70,7 @@ Renewals:
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'command-r',
+        model: 'command-r-plus-08-2024',
         preamble: systemPrompt,
         chat_history: cohereMessages,
         message: lastMessage.message,
