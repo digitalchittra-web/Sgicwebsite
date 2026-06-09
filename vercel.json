@@ -6,6 +6,8 @@
   "routes": [
     { "src": "/", "dest": "/sgicweb.html" },
     { "src": "/sgicweb.html", "dest": "/sgicweb.html" },
+    { "src": "/chatbot.html", "dest": "/chatbot.html" },
+    { "src": "/premium-calculator.html", "dest": "/premium-calculator.html" },
     { "src": "/sgic website/(.*)", "dest": "/sgic website/$1" },
     { "src": "/(.*)\\.html", "dest": "/sgicweb.html" },
     { "src": "/(.*)", "dest": "/$1" }
